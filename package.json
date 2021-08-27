@@ -1,0 +1,31 @@
+{
+  "name": "waysbucks",
+  "version": "1.0.0",
+  "description": "Backend Web Development of WaysBucks using Express JS, MySQL, and Sequelize",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ExpressJS",
+    "MySQL",
+    "Sequelize",
+    "NodeJS"
+  ],
+  "author": "JonathanWK",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "joi": "^17.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.3.0",
+    "sequelize": "^6.6.5",
+    "sequelize-cli": "^6.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
