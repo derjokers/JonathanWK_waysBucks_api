@@ -3,6 +3,7 @@ const { User } = require('../../models');
 // Import Package
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // REGISTER 
 exports.register = async (req,res) => {
@@ -11,9 +12,6 @@ exports.register = async (req,res) => {
         fullName: Joi.string().min(2).required(),
         email: Joi.string().email().min(9).required(),
         password: Joi.string().min(8).required(),
-        image: Joi.string(),
-        status: Joi.string(),
-        isAdmin: Joi.boolean()
     })
 
     const { error } = schema.validate(req.body);
@@ -44,6 +42,8 @@ exports.register = async (req,res) => {
             email: req.body.email,
             password: hashedPassword
         });
+
+        const token = jwt.sign({ id: newUser.id}, process.env.TOKEN_KEY);
         res.status(200).send({
             status: "success",
             message: "new user successful created",
@@ -51,7 +51,7 @@ exports.register = async (req,res) => {
                 user: {
                     fullName: newUser.fullName,
                     email: newUser.email,
-                    token: hashedPassword
+                    token
                 }
             },
         });
@@ -93,15 +93,16 @@ exports.login = async (req,res) => {
                     message: "invalid password"
                 }
             })
-        }
+        };
 
+        const token = jwt.sign({ id: userExist.id}, process.env.TOKEN_KEY)
         res.status(200).send({
             status: "success",
             data: {
                 user: {
                     fullName: userExist.fullName,
                     email: userExist.email,
-                    token: userExist.password
+                    token
                 }
             }
         })

@@ -1,24 +1,5 @@
 const { User } = require('../../models')
 
-// Testing Add Users
-exports.addUser = async (req,res) => {
-    try {
-        const user = await User.create(req.body);
-
-        res.send({
-            status: "success",
-            message: "Add user finished",
-            user
-        });
-    } catch (error) {
-        console.log(error);
-        res.send({
-            status: "failed",
-            message: "Server Error",
-        });
-    }
-};
-
 // GET USERS
 exports.getUsers = async (req,res) => {
     try {
