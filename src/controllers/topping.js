@@ -1,17 +1,17 @@
-const { Product } = require('../../models');
+const { Topping } = require('../../models');
 
-// GET ALL PRODUCTS
-exports.getProducts = async (req,res) => {
+// GET ALL TOPPINGS
+exports.getToppings = async (req,res) => {
     try {
-        const products = await Product.findAll({
+        const toppings = await Topping.findAll({
             attributes: {
                 exclude: ["createdAt","updatedAt"]
             }
         });
 
-        if (!products) {
-            return res.status(400).send({
-                message: "no product available",
+        if (!toppings) {
+            return res.status(404).send({
+                message: "no topping available",
                 data: []
             })
         }
@@ -19,7 +19,7 @@ exports.getProducts = async (req,res) => {
         res.status(200).send({
             status: "success",
             data: {
-                products
+                toppings
             },
         });
     } catch (error) {
@@ -31,20 +31,20 @@ exports.getProducts = async (req,res) => {
     }
 }
 
-// GET A PRODUCT BY ID
-exports.getProduct = async (req,res) => {
+// GET A TOPPING BY ID
+exports.getTopping = async (req,res) => {
     try {
         const { id } = req.params;
-        const product = await Product.findOne({
+        const topping = await Topping.findOne({
             where: { id },
             attributes: {
                 exclude: ["createdAt", "updatedAt"]
             }
         });
 
-        if (!product) {
-            return res.status(400).send({
-                message: "no product available",
+        if (!topping) {
+            return res.status(404).send({
+                message: "no topping available",
                 data: []
             })
         }
@@ -52,7 +52,7 @@ exports.getProduct = async (req,res) => {
         res.status(200).send({
             status: "success",
             data: {
-                product
+                topping
             },
         });
     } catch (error) {
@@ -64,17 +64,17 @@ exports.getProduct = async (req,res) => {
     }
 }
 
-// ADD NEW PRODUCT
-exports.addProduct = async (req,res) => {
+// ADD NEW TOPPING
+exports.addTopping = async (req,res) => {
     try {
         const { ...data} = req.body;
 
-        await Product.create({
+        await Topping.create({
             ...data,
             image: req.file.filename
         });
 
-        const productData = await Product.findOne({
+        const toppingData = await Topping.findOne({
             where: {
                 ...data
             },
@@ -84,11 +84,12 @@ exports.addProduct = async (req,res) => {
         })
 
         res.status(200).send({
-            message: "a new product successfully added",
+            message: "a new topping successfully added",
             data: {
-                product: productData
+                product: toppingData
             }
         })
+
     } catch (error) {
          // server error
         console.log(error);
@@ -98,27 +99,27 @@ exports.addProduct = async (req,res) => {
     }
 }
 
-exports.editProduct = async (req,res) => {
+exports.editTopping = async (req,res) => {
     try {
         const { id } = req.params;
         const { data} = req.body;
 
-        const checkProduct = await Product.findOne({ where: { id }});
+        const checkTopping = await Topping.findOne({ where: { id }});
 
-        if (!checkProduct) {
+        if (!checkTopping) {
             return res.status(404).send({
                 status: "id not found"
             });
         }
 
-        await Product.update({
+        await Topping.update({
             ...data,
             image: req.file.filename
         }, { where : { id }})
 
         
 
-        const product = await Product.findOne({
+        const topping = await Topping.findOne({
             where: { id },
             attributes: {
                 exclude: ["createdAt", "updatedAt"]
@@ -126,9 +127,9 @@ exports.editProduct = async (req,res) => {
         });
 
         res.status(200).send({
-            message: `product with id ${id} succesfully updated`,
+            message: `topping with id ${id} succesfully updated`,
             data: {
-                product
+                topping
             }
         })
     } catch (error) {
@@ -140,27 +141,27 @@ exports.editProduct = async (req,res) => {
     }
 }
 
-exports.deleteProduct = async (req,res) => {
+exports.deleteTopping = async (req,res) => {
     try {
         const { id } = req.params;
-        const product = await Product.findOne({
+        const topping = await Topping.findOne({
             where: { id },
             attributes: {
                 exclude: ["createdAt", "updatedAt"]
             }
         });
     
-        if(!product) {
+        if(!topping) {
             return res.status(404).send({
-                message: `product with id ${id} not found`,
+                message: `topping with id ${id} not found`,
                 data: []
             })
         }
     
-        await Product.destroy({ where: { id }})
+        await Topping.destroy({ where: { id }})
     
         res.status(200).send({
-            message: "product successfully deleted",
+            message: "topping successfully deleted",
             data: {
                 id
             }

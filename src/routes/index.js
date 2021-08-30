@@ -24,6 +24,15 @@ const {
     editProduct
 } = require("../controllers/product");
 
+// Import Topping Controller
+const { 
+    getTopping, 
+    getToppings,
+    addTopping,
+    editTopping,
+    deleteTopping
+} = require("../controllers/topping");
+
 
 // USER ROUTER
 router.get("/users", getUsers);
@@ -35,7 +44,14 @@ router.get("/products", getProducts);
 router.get("/product/:id", getProduct);
 router.post("/product", auth, uploadFile("image"), addProduct);
 router.patch("/product/:id", auth, uploadFile("image"), editProduct);
-router.delete("/product/:id", deleteProduct);
+router.delete("/product/:id", auth, deleteProduct);
+
+// TOPPING ROUTER
+router.get("/toppings", getToppings);
+router.get("/topping/:id", getTopping);
+router.post("/topping", auth, uploadFile("image"), addTopping);
+router.patch("/topping/:id",auth, uploadFile("image"), editTopping);
+router.delete("/topping/:id", auth, deleteTopping);
 
 // REGISTER & LOGIN AUTH
 router.post('/register', register);
